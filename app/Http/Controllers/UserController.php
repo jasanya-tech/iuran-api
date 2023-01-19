@@ -60,7 +60,7 @@ class UserController extends Controller
         $user->save();
         $user = collect($user)->only(['id', 'full_name', 'email', 'picture'])->put('role_name', $user->role_user->role_name);
         return response()->json([
-            'message' => 'Registrasi Berhasil',
+            'message' => 'data user berhasil di tambahkan',
             'user' => $user,
         ], 201);
     }
@@ -105,8 +105,8 @@ class UserController extends Controller
             $path = Storage::putFile('public/images/profile', $request->picture);
             $path = Helper::reImagePath($path);
             $user->picture = $path;
-            if ($request->picture != 'default.jpg') {
-                unlink(public_path('storage/images/' . $request->picture));
+            if ($request->old_picture != 'default.jpg') {
+                unlink(public_path('storage/images/' . $request->old_picture));
             }
         }
         $user->full_name = $request->full_name;
@@ -116,7 +116,7 @@ class UserController extends Controller
         $user->save();
         $user = collect($user)->only(['id', 'full_name', 'email', 'picture'])->put('role_name', $user->role_user->role_name);
         return response()->json([
-            'message' => 'Registrasi Berhasil',
+            'message' => 'data user berhasil di rubah',
             'user' => $user,
         ], 200);
     }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HouseController;
 use App\Http\Controllers\HttpResponse;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ImageController;
@@ -35,13 +36,16 @@ Route::group([
         Route::post('logout', 'logout');
         Route::post('refresh', 'refresh');
     });
+    Route::get('/needJwt', [HttpResponse::class, 'index'])->name('needJWT');
+    Route::apiResource('houses', HouseController::class);
+    Route::apiResource('users', UserController::class);
 });
 
-
-Route::apiResource('provinces', ProvinceController::class)->middleware('auth:api');
-Route::apiResource('cities', CityController::class);
-Route::apiResource('users', UserController::class);
-Route::get('/needJwt', [HttpResponse::class, 'index'])->name('needJWT');
-
-Route::get('image/{dir}/{file_name}', [ImageController::class, 'getImage']);
-Route::post('image', [ImageController::class, 'uploadImage']);
+Route::group([
+    'middleware' => ['auth:api', 'cors'],
+], function ($router) {
+    Route::apiResource('provinces', ProvinceController::class);
+    Route::apiResource('cities', CityController::class);
+    Route::get('image/{dir}/{file_name}', [ImageController::class, 'getImage']);
+    Route::post('image', [ImageController::class, 'uploadImage']);
+});

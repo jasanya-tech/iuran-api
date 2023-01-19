@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('houses', function (Blueprint $table) {
             $table->id();
             $table->string('house_name');
-            $table->string('picture');
+            $table->string('picture')->default('/houses/default.jpg');
             $table->integer('unit_cars')->nullable();
             $table->integer('unit_motorcycle')->nullable();
             $table->text('address')->nullable();

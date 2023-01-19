@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
 use App\Models\House;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class HouseController extends Controller
 {
@@ -14,22 +16,17 @@ class HouseController extends Controller
      */
     public function index()
     {
-        $house = collect(House::all())->map->only(['id', 'city_name', 'province', 'created_at', 'updated_at'])->all();
+        $houses  = House::all();
+        $houses = collect($houses)->map->only(['id', 'house_name', 'picture', 'unit_cars', 'user', 'unit_motorcycle', 'created_at', 'updated_at'])->all();
+        if (!$houses) {
+            return response()->json([
+                "message" => "rumah tidak di temukan"
+            ], 404);
+        }
         return response()->json([
-            'code' => 200,
-            'house' => $house,
+            'houses' => $houses,
             'message' => 'data rumah berhasil di ambil'
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -40,7 +37,23 @@ class HouseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $house = new House;
+        $house->user_id = $request->user_id;
+        $house->house_name = $request->house_name;
+        if ($request->hasFile('picture')) {
+            $path = Storage::putFile('public/images/houses', $request->picture);
+            $path = Helper::reImagePath($path);
+            $house->picture = $path;
+        }
+        $house->unit_cars = $request->unit_cars;
+        $house->unit_motorcycle = $request->unit_motorcycle;
+        $house->address = $request->address;
+        $house->city_id = $request->city_id;
+        $house->save();
+        return response()->json([
+            'house' => $house,
+            "message" => "Berhasil menambah rumah"
+        ], 201);
     }
 
     /**
@@ -51,18 +64,11 @@ class HouseController extends Controller
      */
     public function show(House $house)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\House  $house
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(House $house)
-    {
-        //
+        $house = collect($house)->only(['id', 'house_name', 'picture', 'unit_cars', 'unit_motorcycle', 'created_at', 'updated_at'])->put('user', $house->user);
+        return response()->json([
+            'house' => $house,
+            "message" => "data rumah id " . $house['id'] . " berhasil di ambil"
+        ]);
     }
 
     /**
@@ -74,7 +80,25 @@ class HouseController extends Controller
      */
     public function update(Request $request, House $house)
     {
-        //
+        $house->user_id = $request->user_id;
+        $house->house_name = $request->house_name;
+        if ($request->hasFile('picture')) {
+            $path = Storage::putFile('public/images/houses', $request->picture);
+            $path = Helper::reImagePath($path);
+            $house->picture = $path;
+            if ($request->old_picture != 'defaut.jpg') {
+                unlink(public_path('storage/images/' . $request->old_picture));
+            }
+        }
+        $house->unit_cars = $request->unit_cars;
+        $house->unit_motorcycle = $request->unit_motorcycle;
+        $house->address = $request->address;
+        $house->city_id = $request->city_id;
+        $house->save();
+        return response()->json([
+            'house' => $house,
+            "message" => "Berhasil menambah rumah"
+        ], 200);
     }
 
     /**
@@ -85,6 +109,9 @@ class HouseController extends Controller
      */
     public function destroy(House $house)
     {
-        //
+        $house->delete();
+        return response()->json([
+            "message" => "data rumah berhasil di hapus",
+        ], 204);
     }
 }
