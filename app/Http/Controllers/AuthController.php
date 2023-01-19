@@ -32,6 +32,7 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
+        // $user = collect($user)->only(['id', 'full_name', 'email', 'picture'])->put('role', collect($user->role_user)->pluck('role_name'));
         return response()->json([
             "message" => "Login Berhasil",
             'user' => $user,

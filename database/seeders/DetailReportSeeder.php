@@ -2,11 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\House;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class HouseSeeder extends Seeder
+class DetailReportSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,8 +14,6 @@ class HouseSeeder extends Seeder
      */
     public function run()
     {
-        House::upset([
-            []
-        ]);
+        //
     }
 }

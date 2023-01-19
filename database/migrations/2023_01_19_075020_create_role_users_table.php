@@ -13,14 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('houses', function (Blueprint $table) {
+        Schema::create('role_users', function (Blueprint $table) {
             $table->id();
-            $table->string('house_name');
-            $table->string('picture');
-            $table->integer('unit_cars')->nullable();
-            $table->integer('unit_motorcycle')->nullable();
-            $table->text('address')->nullable();
-            $table->softDeletes();
+            $table->string('role_name');
+            $table->string('access');
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('houses');
+        Schema::dropIfExists('role_users');
     }
 };

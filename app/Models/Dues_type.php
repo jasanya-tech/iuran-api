@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Dues_type extends Model
 {
     use HasFactory, SoftDeletes;
+
+    public function dues()
+    {
+        return $this->hasMany(Dues::class);
+    }
 }

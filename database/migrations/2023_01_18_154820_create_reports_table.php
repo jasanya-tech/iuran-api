@@ -14,8 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('reports', function (Blueprint $table) {
-            $table->id();
-            $table->string('bulan');
+            $table->id('invoice');
+            $table->double('total_dues');
+            $table->double('status');
             $table->softDeletes();
             $table->timestamps();
         });

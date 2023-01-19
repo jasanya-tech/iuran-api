@@ -6,17 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Dues extends Model
+class Role_user extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $table = "role_users";
+    protected $fillable = [
+        "role_name",
+        "access"
+    ];
 
-    public function house()
+    public function user()
     {
-        return $this->belongsTo(House::class);
-    }
-
-    public function dues_type()
-    {
-        return $this->belongsTo(Dues_type::class);
+        return $this->hasMany(User::class);
     }
 }
