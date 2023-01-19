@@ -23,12 +23,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Authentication
-Route::controller(AuthController::class)->group(function () {
-    Route::post('login', 'login');
-    Route::post('register', 'register');
-    Route::post('logout', 'logout');
-    Route::post('refresh', 'refresh');
+
+Route::group([
+    'middleware' => ['api', 'cors'],
+    'namespace' => $this->namespace,
+    'prefix' => 'api',
+], function ($router) {
+    Route::controller(AuthController::class)->group(function () {
+        Route::post('login', 'login');
+        Route::post('register', 'register');
+        Route::post('logout', 'logout');
+        Route::post('refresh', 'refresh');
+    });
 });
+
 
 Route::apiResource('provinces', ProvinceController::class)->middleware('auth:api');
 Route::apiResource('cities', CityController::class);
