@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ProvinceController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HttpResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,5 +22,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResource('provinces', ProvinceController::class);
+// Authentication
+Route::controller(AuthController::class)->group(function () {
+    Route::post('login', 'login');
+    Route::post('register', 'register');
+    Route::post('logout', 'logout');
+    Route::post('refresh', 'refresh');
+});
+
+Route::apiResource('provinces', ProvinceController::class)->middleware('auth:api');
 Route::apiResource('cities', CityController::class);
+Route::get('/needJwt', [HttpResponse::class, 'index'])->name('needJWT');

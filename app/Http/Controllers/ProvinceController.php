@@ -8,18 +8,28 @@ use Illuminate\Http\Request;
 class ProvinceController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mengambil seluruh data provinsi
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $provinces = collect(Province::all())->map->only(['id', 'province_name', 'cities', 'created_at', 'updated_at'])->all();
-        return response()->json([
-            'code' => 200,
-            'provinces' => $provinces,
-            'message' => 'data provinsi berhasil di ambil'
-        ]);
+        try {
+            $provinces = collect(Province::findOrFaild())->map->only(['id', 'province_name', 'cities', 'created_at', 'updated_at'])->all();
+            if ($provinces) {
+                return response()->json([
+                    'provinces' => $provinces,
+                    'message' => 'data provinsi berhasil di ambil'
+                ], 200);
+            }
+            return response()->json([
+                'message' => 'Data tidak tersedia'
+            ], 404);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'message' => $th->getMessage(),
+            ], 500);
+        }
     }
 
     /**
