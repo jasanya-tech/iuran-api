@@ -9,4 +9,11 @@ class Helper
     {
         return $text;
     }
+
+    public static function reImagePath($path)
+    {
+        $path = explode("/", $path);
+        $newPath = [$path[2], $path[3]];
+        return "/" . join("/", $newPath);
+    }
 }

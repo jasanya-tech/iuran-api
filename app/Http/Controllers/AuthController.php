@@ -18,10 +18,18 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|string|email',
-            'password' => 'required|string',
-        ]);
+        $rules = [
+            'email' => 'required|string|email|max:255',
+            'password' => 'required|string|min:6',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                "message" => $validator->errors()
+            ], 400);
+        }
+
         $credentials = $request->only('email', 'password');
 
         $token = Auth::attempt($credentials);
@@ -33,7 +41,7 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        $user = collect($user)->only(['id', 'full_name', 'email', 'picture'])->put('role', $user->role_user->role_name);
+        $user = collect($user)->only(['id', 'full_name', 'email', 'picture'])->put('role_name', $user->role_user->role_name);
         return response()->json([
             "message" => "Login Berhasil",
             'user' => $user,
@@ -58,15 +66,15 @@ class AuthController extends Controller
                 "message" => $validator->errors()
             ], 400);
         }
-
-        $user = User::create([
-            'full_name' => $request->full_name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role_user_id' => 2
-        ]);
+        $user = new User;
+        $user->full_name = $request->full_name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->role_user_id = 2;
+        $user->save();
 
         $token = Auth::login($user);
+        $user = collect($user)->only(['id', 'full_name', 'email', 'picture'])->put('role_name', $user->role_user->role_name);
         return response()->json([
             'message' => 'Registrasi Berhasil',
             'user' => $user,
