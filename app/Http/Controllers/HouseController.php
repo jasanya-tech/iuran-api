@@ -18,7 +18,7 @@ class HouseController extends Controller
     {
         $houses  = House::all();
         $houses = collect($houses)->map->only(['id', 'house_name', 'picture', 'unit_cars', 'user', 'unit_motorcycle', 'created_at', 'updated_at'])->all();
-        if (!$houses) {
+        if (count($houses) == 0) {
             return response()->json([
                 "message" => "rumah tidak di temukan"
             ], 404);

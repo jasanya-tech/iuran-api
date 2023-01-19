@@ -3,6 +3,7 @@
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DuesTypeController;
 use App\Http\Controllers\HouseController;
 use App\Http\Controllers\HttpResponse;
 use App\Http\Controllers\UserController;
@@ -37,8 +38,7 @@ Route::group([
         Route::post('refresh', 'refresh');
     });
     Route::get('/needJwt', [HttpResponse::class, 'index'])->name('needJWT');
-    Route::apiResource('houses', HouseController::class);
-    Route::apiResource('users', UserController::class);
+    Route::apiResource('dues_types', DuesTypeController::class);
 });
 
 Route::group([
@@ -46,6 +46,8 @@ Route::group([
 ], function ($router) {
     Route::apiResource('provinces', ProvinceController::class);
     Route::apiResource('cities', CityController::class);
+    Route::apiResource('houses', HouseController::class);
+    Route::apiResource('users', UserController::class);
     Route::get('image/{dir}/{file_name}', [ImageController::class, 'getImage']);
     Route::post('image', [ImageController::class, 'uploadImage']);
 });

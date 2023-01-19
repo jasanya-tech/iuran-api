@@ -14,17 +14,16 @@ class DuesTypeController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $dues_types = Dues_type::all();
+        if (count($dues_types) == 0) {
+            return response()->json([
+                "message" => "jenis iuran kosong"
+            ], 404);
+        }
+        return response()->json([
+            "dues_types" => $dues_types,
+            "message" => "jenis iuran berhasil di ambil"
+        ]);
     }
 
     /**
@@ -35,7 +34,14 @@ class DuesTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $dues_type = new Dues_type();
+        $dues_type->dues_name = $request->dues_name;
+        $dues_type->price = $request->price;
+        $dues_type->save();
+        return response()->json([
+            "dues_type" => $dues_type,
+            "message" => "jenis iuran berhasil di tambahkan"
+        ], 201);
     }
 
     /**
@@ -46,18 +52,9 @@ class DuesTypeController extends Controller
      */
     public function show(Dues_type $dues_type)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Dues_type  $dues_type
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Dues_type $dues_type)
-    {
-        //
+        return response()->json([
+            "dues_type" => $dues_type
+        ], 200);
     }
 
     /**
@@ -69,7 +66,13 @@ class DuesTypeController extends Controller
      */
     public function update(Request $request, Dues_type $dues_type)
     {
-        //
+        $dues_type->dues_name = $request->dues_name;
+        $dues_type->price = $request->price;
+        $dues_type->save();
+        return response()->json([
+            "dues_type" => $dues_type,
+            "message" => "jenis iuran berhasil di update"
+        ], 201);
     }
 
     /**
@@ -80,6 +83,9 @@ class DuesTypeController extends Controller
      */
     public function destroy(Dues_type $dues_type)
     {
-        //
+        $dues_type->delete();
+        return response()->json([
+            "message" => "jenis iuran berhasil di delete"
+        ], 204);
     }
 }
