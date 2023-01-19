@@ -14,10 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
-            $table->integer('total_dues_type');
-            $table->integer('total_cost');
-            $table->enum('ststus', ['terkonfirmasi', 'belum di konfirmasi'])->default('belum di konfirmasi');
+            $table->id('invoice');
+            $table->double('total_dues');
+            $table->enum('status', ['terkonfirmasi', 'belum di konfirmasi'])->default('belum di konfirmasi');
+            $table->string('proof_payment');
+            $table->dateTime('confirmation date');
             $table->softDeletes();
             $table->timestamps();
         });

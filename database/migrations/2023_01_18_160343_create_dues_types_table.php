@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('dues_name');
             $table->double('price');
-            $table->double('number_of_units')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

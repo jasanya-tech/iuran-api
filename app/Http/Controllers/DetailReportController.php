@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\House;
+use App\Models\Detail_report;
 use Illuminate\Http\Request;
 
-class HouseController extends Controller
+class DetailReportController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,12 +14,7 @@ class HouseController extends Controller
      */
     public function index()
     {
-        $house = collect(House::all())->map->only(['id', 'city_name', 'province', 'created_at', 'updated_at'])->all();
-        return response()->json([
-            'code' => 200,
-            'house' => $house,
-            'message' => 'data rumah berhasil di ambil'
-        ]);
+        //
     }
 
     /**
@@ -46,10 +41,10 @@ class HouseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\House  $house
+     * @param  \App\Models\Detail_report  $detail_report
      * @return \Illuminate\Http\Response
      */
-    public function show(House $house)
+    public function show(Detail_report $detail_report)
     {
         //
     }
@@ -57,10 +52,10 @@ class HouseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\House  $house
+     * @param  \App\Models\Detail_report  $detail_report
      * @return \Illuminate\Http\Response
      */
-    public function edit(House $house)
+    public function edit(Detail_report $detail_report)
     {
         //
     }
@@ -69,10 +64,10 @@ class HouseController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\House  $house
+     * @param  \App\Models\Detail_report  $detail_report
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, House $house)
+    public function update(Request $request, Detail_report $detail_report)
     {
         //
     }
@@ -80,10 +75,10 @@ class HouseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\House  $house
+     * @param  \App\Models\Detail_report  $detail_report
      * @return \Illuminate\Http\Response
      */
-    public function destroy(House $house)
+    public function destroy(Detail_report $detail_report)
     {
         //
     }
