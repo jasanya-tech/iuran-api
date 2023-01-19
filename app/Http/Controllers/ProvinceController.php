@@ -14,10 +14,10 @@ class ProvinceController extends Controller
      */
     public function index()
     {
-        $provinces = Province::paginate(10);
+        $provinces = collect(Province::all())->map->only(['id', 'province_name', 'cities', 'created_at', 'updated_at'])->all();
         return response()->json([
             'code' => 200,
-            'data' => $provinces,
+            'provinces' => $provinces,
             'message' => 'data provinsi berhasil di ambil'
         ]);
     }
@@ -30,14 +30,14 @@ class ProvinceController extends Controller
      */
     public function store(Request $request)
     {
-        $province = Province::create([
-            "province_name" => $request->province_name,
-        ]);
+        $province = Province::updateOrCreate(
+            ["province_name" => $request->province_name],
+            ["province_name"]
+        );
         return response()->json([
-            'code' => 201,
-            'data' => $province,
+            'province' => $province,
             'message' => 'Data provinsi berhasil disimpan'
-        ]);
+        ], 201);
     }
 
     /**
@@ -48,11 +48,11 @@ class ProvinceController extends Controller
      */
     public function show(Province $province)
     {
+        $province = collect($province)->put('cities', collect($province->cities)->map->only(['id', 'city_name']));
         return response()->json([
-            'code' => 200,
-            'data' => $province,
+            'province' => $province,
             'message' => '1 Data provinsi berhasil di ambil'
-        ]);
+        ], 200);
     }
 
     /**
@@ -66,11 +66,11 @@ class ProvinceController extends Controller
     {
         $province->province_name = $request->province_name;
         $province->save();
+        $province = collect($province)->put('cities', collect($province->cities)->map->only(['id', 'city_name']));
         return response()->json([
-            'code' => 200,
-            'data' => $province,
+            'province' => $province,
             'message' => 'Data provinsi berhasil diupdate'
-        ]);
+        ], 200);
     }
 
     /**
@@ -83,8 +83,7 @@ class ProvinceController extends Controller
     {
         $province->delete();
         return response()->json([
-            'code' => 204,
-            'data' => null,
+            'province' => null,
             'message' => 'Data provinsi berhasil dihapus'
         ], 204);
     }

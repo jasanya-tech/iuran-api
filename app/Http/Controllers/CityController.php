@@ -14,17 +14,12 @@ class CityController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $cities = collect(City::all())->map->only(['id', 'city_name', 'province', 'created_at', 'updated_at'])->all();
+        return response()->json([
+            'code' => 200,
+            'data' => $cities,
+            'message' => 'data kota berhasil di ambil'
+        ]);
     }
 
     /**
@@ -35,7 +30,15 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $city = City::updateOrCreate(
+            ["province_id" => $request->province_id, "city_name" => $request->city_name,],
+            ["city_name", "province_id"]
+        );
+        $city = collect($city)->put('province', collect($city->province)->only(['id', 'province_name']));
+        return response()->json([
+            'city' => $city,
+            'message' => 'Data kota berhasil disimpan'
+        ], 201);
     }
 
     /**
@@ -46,18 +49,11 @@ class CityController extends Controller
      */
     public function show(City $city)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\City  $city
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(City $city)
-    {
-        //
+        $city = collect($city)->put('province', collect($city->province)->only(['id', 'province_name']));
+        return response()->json([
+            'city' => $city,
+            'message' => '1 Data kota berhasil di ambil'
+        ], 200);
     }
 
     /**
@@ -69,7 +65,14 @@ class CityController extends Controller
      */
     public function update(Request $request, City $city)
     {
-        //
+        $city->city_name = $request->city_name;
+        $city->province_id = $request->province_id;
+        $city->save();
+        $city = collect($city)->put('province', collect($city->province)->only(['id', 'province_name']));
+        return response()->json([
+            'city' => $city,
+            'message' => 'Data kota berhasil diupdate'
+        ], 200);
     }
 
     /**
@@ -80,6 +83,10 @@ class CityController extends Controller
      */
     public function destroy(City $city)
     {
-        //
+        $city->delete();
+        return response()->json([
+            'city' => null,
+            'message' => 'Data kota berhasil dihapus'
+        ], 204);
     }
 }

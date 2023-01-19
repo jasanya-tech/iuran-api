@@ -14,24 +14,24 @@ return new class extends Migration
     public function up()
     {
         Schema::table('houses', function (Blueprint $table) {
-            $table->foreign('user_id', 'user_house_foreign')->references('id')->on('users');
+            $table->foreignId('user_id')->constrained();
         });
 
         Schema::table('cities', function (Blueprint $table) {
-            $table->foreign('province_id', 'province_city_foreign')->references('id')->on('provinces');
+            $table->foreignId('province_id')->constrained();
         });
 
         Schema::table('dues', function (Blueprint $table) {
-            $table->foreign('user_id', 'user_dues_foreign')->references('id')->on('users');
-            $table->foreign('dues_type_id', 'dues_type_dues_foreign')->references('id')->on('dues_types');
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('dues_type_id')->constrained();
         });
 
         Schema::table('transactions', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('NO ACTION')->onUpdate('CASCADE');
+            $table->foreignId('user_id')->constrained()->onDelete('NO ACTION')->onUpdate('CASCADE');
         });
 
         Schema::table('reports', function (Blueprint $table) {
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreignId('user_id')->constrained();
         });
     }
 

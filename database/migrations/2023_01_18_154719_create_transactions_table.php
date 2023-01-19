@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id')->unsigned();
             $table->integer('total_dues_type');
             $table->integer('total_cost');
             $table->enum('ststus', ['terkonfirmasi', 'belum di konfirmasi'])->default('belum di konfirmasi');

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('email', 128)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('picture_path')->nullable();
+            $table->string('picture')->default('default.jpg');
             $table->softDeletes();
             $table->timestamps();
         });

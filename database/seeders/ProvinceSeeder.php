@@ -15,7 +15,7 @@ class ProvinceSeeder extends Seeder
      */
     public function run()
     {
-        Province::upsert([
+        Province::updateOrCreate([
             ['province_name' => 'jakarta'],
             ['province_name' => 'bandung'],
         ], ['province_name']);

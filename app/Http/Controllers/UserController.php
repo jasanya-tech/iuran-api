@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -14,7 +15,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        $users = collect(User::where('id', '!=', Auth()->user()->id))->map->only(['id', 'city_name', 'province', 'created_at', 'updated_at'])->all();
+        return response()->json([
+            'code' => 200,
+            'data' => $users,
+            'message' => 'data kota berhasil di ambil'
+        ]);
     }
 
     /**

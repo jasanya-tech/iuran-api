@@ -14,9 +14,6 @@ return new class extends Migration
     public function up()
     {
         Schema::create('dues', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user_id')->unsigned();
-            $table->integer('dues_type_id')->unsigned();
             $table->softDeletes();
             $table->timestamps();
         });

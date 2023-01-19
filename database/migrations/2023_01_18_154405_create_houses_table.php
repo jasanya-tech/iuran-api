@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('houses', function (Blueprint $table) {
             $table->id();
             $table->string('house_name');
-            $table->integer('user_id')->unsigned();
+            $table->string('picture');
             $table->softDeletes();
             $table->timestamps();
         });
