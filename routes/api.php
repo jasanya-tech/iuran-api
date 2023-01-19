@@ -4,6 +4,7 @@ use App\Http\Controllers\CityController;
 use App\Http\Controllers\ProvinceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HttpResponse;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -38,4 +39,5 @@ Route::group([
 
 Route::apiResource('provinces', ProvinceController::class)->middleware('auth:api');
 Route::apiResource('cities', CityController::class);
+Route::apiResource('users', UserController::class);
 Route::get('/needJwt', [HttpResponse::class, 'index'])->name('needJWT');

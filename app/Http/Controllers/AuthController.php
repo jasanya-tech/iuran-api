@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -32,7 +33,7 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        // $user = collect($user)->only(['id', 'full_name', 'email', 'picture'])->put('role', collect($user->role_user)->pluck('role_name'));
+        $user = collect($user)->only(['id', 'full_name', 'email', 'picture'])->put('role', $user->role_user->role_name);
         return response()->json([
             "message" => "Login Berhasil",
             'user' => $user,
@@ -45,16 +46,24 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
+        $rules = [
             'full_name' => 'required|string|max:45',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
-        ]);
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            return response()->json([
+                "message" => $validator->errors()
+            ], 400);
+        }
 
         $user = User::create([
             'full_name' => $request->full_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role_user_id' => 2
         ]);
 
         $token = Auth::login($user);

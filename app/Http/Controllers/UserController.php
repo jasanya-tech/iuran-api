@@ -15,11 +15,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = collect(User::where('id', '!=', Auth()->user()->id))->map->only(['id', 'city_name', 'province', 'created_at', 'updated_at'])->all();
+        $users = User::all();
         return response()->json([
-            'code' => 200,
-            'data' => $users,
-            'message' => 'data kota berhasil di ambil'
+            'user' => $users,
+            'message' => 'data user berhasil di ambil'
         ]);
     }
 
@@ -52,18 +51,10 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
+        return response()->json([
+            'user' => $user->role_user,
+            'message' => '1 Data user berhasil di ambil'
+        ], 200);
     }
 
     /**
