@@ -26,8 +26,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::group([
     'middleware' => ['api', 'cors'],
-    'namespace' => $this->namespace,
-    'prefix' => 'api',
 ], function ($router) {
     Route::controller(AuthController::class)->group(function () {
         Route::post('login', 'login');
