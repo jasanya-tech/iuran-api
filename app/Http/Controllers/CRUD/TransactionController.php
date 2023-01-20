@@ -22,7 +22,12 @@ class TransactionController extends Controller
     public function index()
     {
         $transactions = Transaction::all();
-        $transactions = collect($transactions)->map->only(['invoce', 'total_dues', 'status', 'proof_payment', 'confirmation_date', 'house']);
+        if (!$transactions) {
+            return response()->json([
+                'message' => 'Transaksi kosong'
+            ], 404);
+        }
+        $transactions = collect($transactions)->map->only(['invoice', 'total_dues', 'status', 'proof_payment', 'confirmation_date', 'house']);
         return response()->json([
             "transactions" => $transactions,
             "message" => "Successfully",
@@ -76,6 +81,14 @@ class TransactionController extends Controller
     public function show($invoice)
     {
         $transaction = Transaction::where('invoice', $invoice)->first();
+        if (!$transaction) {
+            return response()->json(
+                [
+                    "message" => "Transaction tidak ditemukan"
+                ],
+                404
+            );
+        }
         $transaction = collect($transaction)->only(['invoice', 'total_dues', 'status', 'proof_payment', 'confirmation_date'])
             ->put('house', collect($transaction->house)->put('detail_dues', collect($transaction->house->dues)->map(function ($dues) {
                 if ($dues->dues_type->id == 3) {
