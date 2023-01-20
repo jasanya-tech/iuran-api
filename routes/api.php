@@ -11,6 +11,7 @@ use App\Http\Controllers\Warga\DuesController as WargaDues;
 use App\Http\Controllers\HttpResponse;
 use App\Http\Controllers\CRUD\UserController;
 use App\Http\Controllers\ImageController;
+use App\Http\Controllers\MyProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -55,6 +56,7 @@ Route::group([
         $router->get('transactions/{invoice}', 'show');
         $router->post('transactions', 'store');
         $router->put('transactions/confirm/{invoice}', 'confirm');
+        $router->get('income/transactions', 'income');
         $router->put('transactions/{invoice}', 'update');
         $router->delete('transactions/{invoice}', 'destroy');
     });
@@ -64,6 +66,11 @@ Route::group([
         $router->controller(WargaDues::class)->group(function ($router) {
             $router->get('dues', 'index');
             $router->get('dues/{home_id}', 'show');
+        });
+    });
+    $router->prefix('user')->group(function ($router) {
+        $router->controller(MyProfileController::class)->group(function ($router) {
+            $router->get('name', 'myName');
         });
     });
     Route::apiResource('warga/dues', WargaDues::class);

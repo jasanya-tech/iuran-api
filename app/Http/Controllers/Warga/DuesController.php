@@ -6,6 +6,8 @@ use App\Models\Dues;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\House;
+use App\Models\Transaction;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class DuesController extends Controller
@@ -24,18 +26,26 @@ class DuesController extends Controller
     public function index()
     {
         $houses = House::where('user_id', $this->user_id)->get();
+        if (!$houses) {
+            return response()->json([
+                "mesange" => "kamu belum menambahkan rumah"
+            ], 404);
+        }
         $houses = collect($houses)->map(function ($house) {
             return collect($house)->only(['id', 'picture', 'house_name', 'unit_cars', 'unit_motorcycles'])
                 ->put('owner', $house->user->full_name)
-                ->put('total_dues', collect($house->dues)->map(function ($d) {
-                    if ($d->dues_type->id == 3) {
-                        $d->dues_type->price = $d->dues_type->price * $d->house->unit_cars;
+                ->put('total_dues', collect($house->dues)->map(function ($dues) {
+                    if ($dues->dues_type->id == 3) {
+                        $dues->dues_type->price = $dues->dues_type->price * $dues->house->unit_cars;
                     }
-                    if ($d->dues_type->id == 4) {
-                        $d->dues_type->price = $d->dues_type->price * $d->house->unit_motorcycles;
+                    if ($dues->dues_type->id == 4) {
+                        $dues->dues_type->price = $dues->dues_type->price * $dues->house->unit_motorcycles;
                     }
-                    return collect($d->dues_type)->only('price');
+                    return collect($dues->dues_type)->only('price');
                 })->map(function ($dues) {
+                    $transaction = Transaction::orderBy('confirmation_date', 'DESC')->where('house_id', $dues->house->id)->first();
+                    if (Carbon::now() < $transaction->confirmation_date) {
+                    }
                     return $dues->sum('price');
                 }));
         });

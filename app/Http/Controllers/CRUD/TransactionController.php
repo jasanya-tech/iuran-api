@@ -106,7 +106,7 @@ class TransactionController extends Controller
     }
 
     /**
-     * Fungsi confirm digunakan untuk Konfirmasi pembayaran.
+     * Fungsi untuk Konfirmasi pembayaran.
      *
      * 
      */
@@ -187,5 +187,17 @@ class TransactionController extends Controller
     public function destroy(Transaction $transaction)
     {
         //
+    }
+
+    /**
+     * Fungsi untuk menjumlahkan pendapatan.
+     */
+
+    public function income()
+    {
+        return response()->json([
+            "income" => Transaction::where('status', 'terkonfirmasi')->sum('total_dues'),
+            "message" => "Successfully"
+        ], 200);
     }
 }
