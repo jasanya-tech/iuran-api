@@ -6,8 +6,10 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CRUD\DuesTypeController;
 use App\Http\Controllers\CRUD\HouseController;
 use App\Http\Controllers\Warga\HouseController as WargaHouse;
+use App\Http\Controllers\Warga\DuesController as WargaDues;
 use App\Http\Controllers\HttpResponse;
 use App\Http\Controllers\CRUD\UserController;
+use App\Http\Controllers\DuesController;
 use App\Http\Controllers\ImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -49,7 +51,14 @@ Route::group([
     Route::apiResource('houses', HouseController::class);
     Route::apiResource('users', UserController::class);
     Route::apiResource('dues_types', DuesTypeController::class);
-    Route::apiResource('warga/houses', WargaHouse::class);
+    $router->prefix('warga')->group(function ($router) {
+        Route::apiResource('houses', WargaHouse::class);
+        $router->controller(WargaDues::class)->group(function ($router) {
+            $router->get('dues', 'index');
+            $router->get('dues/{home_id}', 'show');
+        });
+    });
+    Route::apiResource('warga/dues', WargaDues::class);
     Route::get('image/{dir}/{file_name}', [ImageController::class, 'getImage']);
     Route::post('image', [ImageController::class, 'uploadImage']);
 });

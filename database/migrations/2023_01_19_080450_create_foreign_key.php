@@ -35,7 +35,8 @@ return new class extends Migration
         });
 
         Schema::table('reports', function (Blueprint $table) {
-            $table->foreignId('house_id')->constrained();
+            $table->foreign('invoice_payment')->references('invoice')->on('transactions');
+            $table->foreign('dues_type_id')->references('id')->on('dues_types');
         });
     }
 

@@ -9,6 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Dues extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $table = "dues";
+    protected $fillable = [
+        "house_id",
+        "dues_type_id",
+    ];
 
     public function house()
     {

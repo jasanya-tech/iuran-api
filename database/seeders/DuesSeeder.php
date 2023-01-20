@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Dues;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -26,5 +27,6 @@ class DuesSeeder extends Seeder
             ["house_id" => 3, "dues_type_id" => 3],
             ["house_id" => 3, "dues_type_id" => 4]
         ];
+        Dues::upsert($dues, ["house_id", "dues_type_id"]);
     }
 }

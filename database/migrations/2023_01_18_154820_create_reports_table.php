@@ -14,9 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('reports', function (Blueprint $table) {
-            $table->id('invoice');
-            $table->double('total_dues');
-            $table->double('status');
+            $table->integer('invoice_payment')->unsigned();
+            $table->integer('dues_type_id')->unsigned();
+            $table->integer('qty');
+            $table->double('subtotal');
             $table->softDeletes();
             $table->timestamps();
         });
