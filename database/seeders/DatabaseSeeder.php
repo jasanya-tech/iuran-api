@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
             CitySeeder::class,
             RoleUserSeeder::class,
             UserSeeder::class,
+            DuesTypeSeeder::class,
+            HouseSeeder::class,
+            DuesSeeder::class,
         ]);
     }
 }

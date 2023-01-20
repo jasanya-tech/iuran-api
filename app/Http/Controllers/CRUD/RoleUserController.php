@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\CRUD;
 
 use App\Models\Role_user;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class RoleUserController extends Controller
 {

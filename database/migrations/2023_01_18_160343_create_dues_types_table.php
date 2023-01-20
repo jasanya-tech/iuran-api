@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('dues_name');
             $table->double('price');
+            $table->enum('jenis_iuran', ['wajib', 'optional']);
             $table->softDeletes();
             $table->timestamps();
         });

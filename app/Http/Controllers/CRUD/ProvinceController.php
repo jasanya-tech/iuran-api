@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\CRUD;
 
 use App\Models\Province;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ProvinceController extends Controller
 {
@@ -15,7 +16,7 @@ class ProvinceController extends Controller
     public function index()
     {
         try {
-            $provinces = collect(Province::findOrFaild())->map->only(['id', 'province_name', 'cities', 'created_at', 'updated_at'])->all();
+            $provinces = collect(Province::all())->map->only(['id', 'province_name', 'cities', 'created_at', 'updated_at'])->all();
             if ($provinces) {
                 return response()->json([
                     'provinces' => $provinces,

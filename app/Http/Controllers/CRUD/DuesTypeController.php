@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\CRUD;
 
 use App\Models\Dues_type;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class DuesTypeController extends Controller
 {
@@ -34,8 +35,11 @@ class DuesTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $dues_type = new Dues_type();
-        $dues_type->dues_name = $request->dues_name;
+        $dues_type = Dues_type::where('dues_name', strtolower($request->dues_name))->first();
+        if (!$dues_type) {
+            $dues_type = new Dues_type();
+        }
+        $dues_type->dues_name = strtolower($request->dues_name);
         $dues_type->price = $request->price;
         $dues_type->save();
         return response()->json([
@@ -66,7 +70,7 @@ class DuesTypeController extends Controller
      */
     public function update(Request $request, Dues_type $dues_type)
     {
-        $dues_type->dues_name = $request->dues_name;
+        $dues_type->dues_name = strtolower($request->dues_name);
         $dues_type->price = $request->price;
         $dues_type->save();
         return response()->json([

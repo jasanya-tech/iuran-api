@@ -9,6 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Dues_type extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $table = 'dues_types';
+    protected $fillable = [
+        'dues_name',
+        'price'
+    ];
 
     public function dues()
     {

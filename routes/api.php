@@ -1,12 +1,13 @@
 <?php
 
-use App\Http\Controllers\CityController;
-use App\Http\Controllers\ProvinceController;
+use App\Http\Controllers\CRUD\CityController;
+use App\Http\Controllers\CRUD\ProvinceController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DuesTypeController;
-use App\Http\Controllers\HouseController;
+use App\Http\Controllers\CRUD\DuesTypeController;
+use App\Http\Controllers\CRUD\HouseController;
+use App\Http\Controllers\Warga\HouseController as WargaHouse;
 use App\Http\Controllers\HttpResponse;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\CRUD\UserController;
 use App\Http\Controllers\ImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -38,7 +39,6 @@ Route::group([
         Route::post('refresh', 'refresh');
     });
     Route::get('/needJwt', [HttpResponse::class, 'index'])->name('needJWT');
-    Route::apiResource('dues_types', DuesTypeController::class);
 });
 
 Route::group([
@@ -48,6 +48,8 @@ Route::group([
     Route::apiResource('cities', CityController::class);
     Route::apiResource('houses', HouseController::class);
     Route::apiResource('users', UserController::class);
+    Route::apiResource('dues_types', DuesTypeController::class);
+    Route::apiResource('warga/houses', WargaHouse::class);
     Route::get('image/{dir}/{file_name}', [ImageController::class, 'getImage']);
     Route::post('image', [ImageController::class, 'uploadImage']);
 });

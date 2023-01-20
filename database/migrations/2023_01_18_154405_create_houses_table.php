@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('house_name');
             $table->string('picture')->default('/houses/default.jpg');
             $table->integer('unit_cars')->nullable();
-            $table->integer('unit_motorcycle')->nullable();
+            $table->integer('unit_motorcycles')->nullable();
             $table->text('address')->nullable();
             $table->softDeletes();
             $table->timestamps();
