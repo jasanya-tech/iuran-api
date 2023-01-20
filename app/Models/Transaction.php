@@ -18,4 +18,9 @@ class Transaction extends Model
         'confirmation_date',
         'status'
     ];
+
+    public function house()
+    {
+        return $this->belongsTo(House::class);
+    }
 }

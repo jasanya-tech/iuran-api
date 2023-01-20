@@ -27,4 +27,9 @@ class House extends Model
     {
         return $this->hasMany(Dues::class);
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

@@ -5,11 +5,11 @@ use App\Http\Controllers\CRUD\ProvinceController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CRUD\DuesTypeController;
 use App\Http\Controllers\CRUD\HouseController;
+use App\Http\Controllers\CRUD\TransactionController;
 use App\Http\Controllers\Warga\HouseController as WargaHouse;
 use App\Http\Controllers\Warga\DuesController as WargaDues;
 use App\Http\Controllers\HttpResponse;
 use App\Http\Controllers\CRUD\UserController;
-use App\Http\Controllers\DuesController;
 use App\Http\Controllers\ImageController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -50,6 +50,14 @@ Route::group([
     Route::apiResource('cities', CityController::class);
     Route::apiResource('houses', HouseController::class);
     Route::apiResource('users', UserController::class);
+    $router->controller(TransactionController::class)->group(function ($router) {
+        $router->get('transactions', 'index');
+        $router->get('transactions/{invoice}', 'show');
+        $router->post('transactions', 'store');
+        $router->put('transactions/confirm/{invoice}', 'confirm');
+        $router->put('transactions/{invoice}', 'update');
+        $router->delete('transactions/{invoice}', 'destroy');
+    });
     Route::apiResource('dues_types', DuesTypeController::class);
     $router->prefix('warga')->group(function ($router) {
         Route::apiResource('houses', WargaHouse::class);

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->double('total_dues');
             $table->enum('status', ['terkonfirmasi', 'belum di konfirmasi'])->default('belum di konfirmasi');
             $table->string('proof_payment');
-            $table->dateTime('confirmation_date');
+            $table->dateTime('confirmation_date')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             DuesTypeSeeder::class,
             HouseSeeder::class,
             DuesSeeder::class,
+            TransactionSeeder::class,
         ]);
     }
 }

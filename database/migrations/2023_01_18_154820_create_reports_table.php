@@ -15,9 +15,9 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->integer('invoice_payment')->unsigned();
-            $table->integer('dues_type_id')->unsigned();
-            $table->integer('qty');
-            $table->double('subtotal');
+            $table->integer('dues_type_id')->unsigned()->nullable();
+            $table->integer('qty')->nullable();
+            $table->double('price')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
