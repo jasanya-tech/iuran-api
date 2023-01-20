@@ -68,9 +68,9 @@ Route::group([
             $router->get('dues/{home_id}', 'show');
         });
     });
-    $router->prefix('user')->group(function ($router) {
+    $router->prefix('whoami')->group(function ($router) {
         $router->controller(MyProfileController::class)->group(function ($router) {
-            $router->get('name', 'myName');
+            $router->get('', 'whoami');
         });
     });
     Route::apiResource('warga/dues', WargaDues::class);
